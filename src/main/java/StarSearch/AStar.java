@@ -18,11 +18,13 @@ public class AStar {
     }
 
     public List<Node> findPath(Node[][] grid) {
-        openSet.add(grid[1][3]);
-        openSet.add(grid[6][3]);
-        openSet.add(grid[3][6]);
-        openSet.add(grid[1][9]);
-        openSet.add(grid[6][9]);
+        for (var i = 0; i < 10; i++) {
+            for (var j = 0; j < 10; j++) {
+                if(grid[i][j] != null) {
+                    openSet.add(grid[i][j]);
+                }
+            }
+        }
 
         Node endNode = grid[6][9];
 
@@ -75,27 +77,24 @@ public class AStar {
         int y = node.getY();
 
         if (x > 0 && grid[x - 1][y] != null) {
-            neighbors.add(grid[x - 1][y]); // Nó à esquerda
+            neighbors.add(grid[x - 1][y]);
         }
         if (x < grid.length - 1 && grid[x + 1][y] != null) {
-            neighbors.add(grid[x + 1][y]); // Nó à direita
+            neighbors.add(grid[x + 1][y]);
         }
         if (y > 0 && grid[x][y - 1] != null) {
-            neighbors.add(grid[x][y - 1]); // Nó acima
+            neighbors.add(grid[x][y - 1]);
         }
         if (y < grid[0].length - 1 && grid[x][y + 1] != null) {
-            neighbors.add(grid[x][y + 1]); // Nó abaixo
+            neighbors.add(grid[x][y + 1]);
         }
-
-        // Você pode adicionar lógica adicional, como permitir movimentos diagonais, dependendo dos seus requisitos.
 
         return neighbors;
     }
 
     private double calculateDistance(Node node1, Node node2) {
         if (node1 == null || node2 == null) {
-            // Lida com nós nulos, por exemplo, quando não há caminho possível
-            return Double.MAX_VALUE; // Valor alto para indicar que não há caminho
+            return Double.MAX_VALUE;
         }
 
         int x1 = node1.getX();
@@ -103,7 +102,6 @@ public class AStar {
         int x2 = node2.getX();
         int y2 = node2.getY();
 
-        // Calcula a distância euclidiana
         double distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
         return distance;
