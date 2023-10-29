@@ -6,8 +6,8 @@ import java.util.List;
 import CommomAlgorithm.Node;
 
 public class SimulatedAnnealing {
-	public List<Node> simulatedAnnealing(List<Node> paths, Node[][] grid) {
-		List<Node> currentRoute = generateInitialRoute(paths.get(0), paths.get(paths.size() - 1), grid);
+	public List<Node> simulatedAnnealing(Node start, Node end, Node[][] grid) {
+		List<Node> currentRoute = generateInitialRoute(start, end, grid);
 		List<Node> bestRoute = new ArrayList<>(currentRoute);
 		double currentCost = calculateRouteCost(currentRoute);
 		double bestCost = currentCost;
@@ -42,15 +42,10 @@ public class SimulatedAnnealing {
 		Node currentNode = start;
 
 		while (!end.equals(currentNode)) {
-			int x = 0;
-			int y = 0;
-			if (currentNode != null) {
-				route.add(currentNode);
-				x = currentNode.getX();
-				y = currentNode.getY();
-			}
+			int x = currentNode.getX();
+			int y = currentNode.getY();
+			route.add(currentNode);
 
-			// Escolha o próximo nó na direção mais próxima do nó final.
 			if (x < end.getX()) {
 				x++;
 			} else if (x > end.getX()) {
@@ -63,7 +58,7 @@ public class SimulatedAnnealing {
 			currentNode = grid[x][y];
 		}
 
-		route.add(currentNode); // Adicione o nó final à rota.
+		route.add(currentNode);
 
 		return route;
 	}

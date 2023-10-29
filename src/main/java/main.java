@@ -13,16 +13,8 @@ public class main {
 		Node[][] grid = new Node[width][height];
 
 		/*
-		 * O mapa de forma visual ficaria da seguinte forma:
-		 * --------
-		 * --------
-		 * 1------2
-		 * --------
-		 * --------
-		 * --3-----
-		 * --------
-		 * --------
-		 * 4------5
+		 * O mapa de forma visual ficaria da seguinte forma: -------- -------- 1------2
+		 * -------- -------- --3----- -------- -------- 4------5
 		 */
 		grid[1][3] = new Node(1, 3, 4, 2);
 		grid[6][3] = new Node(6, 3, 8, 4);
@@ -40,12 +32,14 @@ public class main {
 		SimulatedAnnealing SA = new SimulatedAnnealing();
 
 		Node[][] gridSA = new Node[width][height];
-		List<Node> pathSA = new ArrayList<>();
-		pathSA.add(grid[1][3]);
-		pathSA.add(grid[6][3]);
-		pathSA.add(grid[3][6]);
-		pathSA.add(grid[1][9]);
-		pathSA.add(grid[6][9]);
+		List<Node> listValidPositions = new ArrayList<>();
+
+		listValidPositions.add(grid[1][3]);
+		listValidPositions.add(grid[6][3]);
+		listValidPositions.add(grid[3][6]);
+		listValidPositions.add(grid[1][9]);
+		listValidPositions.add(grid[6][9]);
+
 		for (int x = 0; x < 10; x++) {
 			for (int y = 0; y < 10; y++) {
 				int value = (x * 10) + y + 1;
@@ -54,16 +48,30 @@ public class main {
 			}
 		}
 
-		List<Node> resultSA = SA.simulatedAnnealing(pathSA, grid);
+		gridSA[1][3] = grid[1][3];
+		gridSA[6][3] = grid[6][3];
+		gridSA[3][6] = grid[3][6];
+		gridSA[1][9] = grid[1][9];
+		gridSA[6][9] = grid[6][9];
+
+		for (int i = 0; i < listValidPositions.size(); i++) {
+			List<Node> resultSA = new ArrayList<>();
+			if (i + 1 < listValidPositions.size()) {
+				Node actualRote = listValidPositions.get(i);
+				Node finalRote = listValidPositions.get(i + 1);
+				resultSA.addAll(SA.simulatedAnnealing(actualRote, finalRote, gridSA));
+				printResultSA(resultSA, i);
+			}
+		}
 
 		long finalTimeSA = System.currentTimeMillis();
-		printResult(resultSA, finalTimeSA - initialTimeSA);
+		System.out.println("Tempo de execução:" + (finalTimeSA - initialTimeSA) + " milisegundos");
 	}
 
 	public static void printResult(List<Node> path, long executionTime) {
 		System.out.println("==========================================================================");
 		System.out.println("Busca por estrela");
-		System.out.println(String.format("Tempo de execução: %s Segundos", executionTime / 1000));
+		System.out.println(String.format("Tempo de execução: %s milisegundos", executionTime));
 		if (!path.isEmpty()) {
 			System.out.println("Caminho encontrado:");
 			for (Node node : path) {
@@ -74,4 +82,15 @@ public class main {
 		}
 		System.out.println("==========================================================================");
 	}
+
+	public static void printResultSA(List<Node> path, int actualRoteNumber) {
+		System.out.println("==========================================================================");
+		System.out.println("Rota atual - " + (actualRoteNumber + 1));
+		System.out.println("Caminho encontrado:");
+		for (Node node : path) {
+			System.out.println("Nó: (" + node.getX() + ", " + node.getY() + ")");
+		}
+		System.out.println("==========================================================================");
+	}
+
 }
