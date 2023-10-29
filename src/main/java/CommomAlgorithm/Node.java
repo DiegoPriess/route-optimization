@@ -13,6 +13,14 @@ public class Node {
         this.hCost = hCost;
     }
 
+	public Node(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.parent = null;
+        this.gCost = 0.0;
+        this.hCost = 0.0;
+    }
+
     public int getX() {
         return x;
     }
