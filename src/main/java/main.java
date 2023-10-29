@@ -26,13 +26,17 @@ public class main {
         grid[1][9] = new Node(1, 9, 8, 13);
         grid[6][9] = new Node(6, 9, 13, 17);
 
+        long initialTime = System.currentTimeMillis();
         AStar aStar = new AStar(10, 10);
-
-        List<Node> path1 = aStar.findPath(grid);
-        printResult(path1);
+        List<Node> pathStarSearch = aStar.findPath(grid);
+        long finalTime = System.currentTimeMillis();
+        printResult(pathStarSearch, finalTime-initialTime);
     }
 
-    public static void printResult(List<Node> path) {
+    public static void printResult(List<Node> path, long executionTime) {
+        System.out.println("==========================================================================");
+        System.out.println("Busca por estrela");
+        System.out.println(String.format("Tempo de execução: %s Segundos", executionTime/1000));
         if (!path.isEmpty()) {
             System.out.println("Caminho encontrado:");
             for (Node node : path) {
@@ -41,5 +45,6 @@ public class main {
         } else {
             System.out.println("Nenhum caminho encontrado.");
         }
+        System.out.println("==========================================================================");
     }
 }
